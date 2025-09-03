@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fitness & Work</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header / Navbar -->
+  <header>
+    <div class="logo">
+  🏋️ Fitness & Work 
+  {% if user %}
+    <span class="welcome">Hi, {{ user }} 👋</span>
+  {% endif %}
+</div>
+
+    <nav>
+      <ul>
+        
+        <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+
+        <!-- Dropdown for Planning -->
+        <li class="dropdown">
+          <a href="#">Planning ▾</a>
+          <ul class="dropdown-content">
+            <li><a href="{{ url_for('workouts') }}">Workouts</a></li>
+            <li><a href="{{ url_for('diet') }}">Diet</a></li>
+            <li><a href="{{ url_for('worklife') }}">Work-Life</a></li>
+          </ul>
+        </li>
+
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+      {% if user %}
+        <li><a href="#">👤 {{ user }}</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+      {% else %}
+        <li><a href="{{ url_for('signup') }}">Signup</a></li>
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+      {% endif %}
+
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Balance Your <span>Fitness</span> & <span>Work</span></h1>
+      <p>Stay healthy, stay productive. Achieve the perfect balance between your career and body goals.</p>
+      <a href="{{ url_for('workouts') }}" class="btn">Explore Workouts</a>
+    </div>
+  </section>
+
+  <!-- Features -->
+<section class="features">
+
+  <a href="{{ url_for('workouts') }}" class="feature-card">
+    <img src="{{ url_for('static', filename='images/workout1.png') }}" alt="Workout">
+    <h3>Workouts</h3>
+    <p>Guided exercises to keep your body strong and active.</p>
+  </a>
+
+  <a href="{{ url_for('diet') }}" class="feature-card">
+    <img src="{{ url_for('static', filename='images/diet-food.png') }}" alt="Diet">
+    <h3>Diet Plans</h3>
+    <p>Personalized diet plans to stay fit and energetic.</p>
+  </a>
+
+  <a href="{{ url_for('worklife') }}" class="feature-card">
+    <img src="{{ url_for('static', filename='images/work-life-balance.png') }}" alt="Work-Life">
+    <h3>Work-Life Balance</h3>
+    <p>Tips to balance work stress and health routines.</p>
+  </a>
+
+</section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Fitness & Work all rights reserved</p>
+  </footer>
+</body>
+</html>

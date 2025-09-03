@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Workouts | Fitness & Work</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">🏋️ Fitness & Work</div>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="page-section">
+    <h1>Workouts</h1>
+    <div class="grid">
+      {% for w in workouts %}
+      <div class="card">
+        <img src="{{ url_for('static', filename=w.image) }}" alt="{{ w.name }}">
+        <h3>{{ w.name }}</h3>
+        <p><strong>Uses:</strong> {{ w.uses }}</p>
+        <p><strong>Plan:</strong> {{ w.plan }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Fitness & Work | All Rights Reserved</p>
+  </footer>
+</body>
+</html>

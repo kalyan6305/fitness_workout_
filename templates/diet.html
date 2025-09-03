@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diet Plan | Fitness & Work</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">🥗 Fitness & Work</div>
+    <nav>
+      <ul>
+         <li><a href="{{ url_for('home') }}">Home</a></li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="page-section">
+    <h1>Personalized Diet Plan</h1>
+
+    <form method="POST" class="diet-form">
+      <label>Weight (kg):</label>
+      <input type="number" name="weight" required>
+
+      <label>Height (cm):</label>
+      <input type="number" name="height" required>
+
+      <label>Age:</label>
+      <input type="number" name="age" required>
+
+      <label>Goal:</label>
+      <select name="goal" required>
+        <option value="lose">Lose Weight</option>
+        <option value="gain">Gain Weight</option>
+        <option value="maintain">Maintain</option>
+      </select>
+
+      <button type="submit">Get My Diet Plan</button>
+    </form>
+
+    {% if diet_plan %}
+    <div class="diet-result">
+      <h2>{{ diet_plan.title }}</h2>
+      <p><b>Your BMI:</b> {{ diet_plan.bmi }}</p>
+      <ul>
+        {% for item in diet_plan.recommendation %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </section>
+
+  <footer>
+    <p>© 2025 Fitness & Work | All Rights Reserved</p>
+  </footer>
+</body>
+</html>

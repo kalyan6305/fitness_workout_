@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Work-Life Balance | Fitness & Work</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    .worklife-form{max-width:720px;margin:20px auto;padding:20px;background:#fff;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,.08)}
+    .worklife-form .row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+    .worklife-form label{font-weight:600;margin-top:10px}
+    .worklife-form input,.worklife-form select{padding:10px;border-radius:10px;border:1px solid #ddd}
+    .worklife-form button{margin-top:14px;padding:12px;border:none;border-radius:12px;background:#007bff;color:#fff;font-weight:700;cursor:pointer}
+    .worklife-form button:hover{opacity:.92}
+    .schedule-wrap{max-width:960px;margin:30px auto}
+    .person-card{background:#fff;border-radius:16px;box-shadow:0 6px 20px rgba(0,0,0,.08);padding:20px;margin-bottom:22px}
+    .schedule-table{width:100%;border-collapse:collapse}
+    .schedule-table th,.schedule-table td{border-bottom:1px solid #eee;padding:10px;text-align:left}
+    .pill{display:inline-block;background:#eef2ff;border:1px solid #dfe3ff;border-radius:999px;padding:4px 10px;font-size:.85rem;margin-right:6px}
+    .subtle{color:#666}
+    .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    @media(max-width:760px){.two-col{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo">🕒 Fitness & Work</div>
+  <nav>
+    <ul>
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('contact') }}">Contact</a></li>
+  </nav>
+</header>
+
+<section class="page-section">
+  <h1>Create a Personalized, Timed Day Schedule</h1>
+  <form method="POST" class="worklife-form">
+    <div class="row">
+      <div>
+        <label>Person's Name</label>
+        <input type="text" name="name" placeholder="e.g., Rahul" required>
+      </div>
+      <div>
+        <label>Wake Time</label>
+        <input type="time" name="wake_time" required>
+      </div>
+      <div>
+        <label>Work Start</label>
+        <input type="time" name="work_start" required>
+      </div>
+      <div>
+        <label>Work End</label>
+        <input type="time" name="work_end" required>
+      </div>
+      <div>
+        <label>Sleep Time</label>
+        <input type="time" name="sleep_time" required>
+      </div>
+      <div>
+        <label>Commute (mins each way)</label>
+        <input type="number" name="commute" min="0" value="0">
+      </div>
+      <div>
+        <label>Workout Slot</label>
+        <select name="workout_slot">
+          <option value="morning">Morning</option>
+          <option value="lunch">Lunch Break</option>
+          <option value="evening">Evening</option>
+          <option value="none">None (skip)</option>
+        </select>
+      </div>
+      <div>
+        <label>Workout Duration (mins)</label>
+        <input type="number" name="workout_duration" min="10" max="120" value="30">
+      </div>
+      <div>
+        <label>Goal</label>
+        <select name="goal">
+          <option value="lose">Lose Fat</option>
+          <option value="gain">Gain Muscle</option>
+          <option value="maintain">Maintain</option>
+        </select>
+      </div>
+      <div>
+        <label>Level</label>
+        <select name="level">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+        </select>
+      </div>
+      <div>
+        <label>Equipment</label>
+        <select name="equipment">
+          <option value="none">None / Bodyweight</option>
+          <option value="dumbbells">Dumbbells</option>
+          <option value="gym">Gym Access</option>
+        </select>
+      </div>
+      <div>
+        <label>Break Style</label>
+        <select name="breaks">
+          <option value="pomodoro">Pomodoro</option>
+          <option value="standard">Standard hourly</option>
+        </select>
+      </div>
+    </div>
+    <button type="submit">Generate Schedule</button>
+  </form>
+
+  {% if generated %}
+  <div class="schedule-wrap">
+    <div class="person-card">
+      <h2>Schedule for {{ generated.name }}</h2>
+      <table class="schedule-table">
+        <thead>
+          <tr><th>Time</th><th>Activity</th><th class="subtle">Notes</th></tr>
+        </thead>
+        <tbody>
+        {% for b in generated.schedule %}
+          <tr>
+            <td>{{ b.start }} – {{ b.end }}</td>
+            <td>{{ b.title }}</td>
+            <td class="subtle">{{ b.note }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+
+      {% if generated.workout and generated.workout.main %}
+      <div class="two-col" style="margin-top:18px">
+        <div>
+          <h3>Workout Details <span class="pill">{{ generated.workout.slot|capitalize }}</span></h3>
+          <p class="subtle">{{ generated.workout.note }}</p>
+          <h4>Warm-up</h4>
+          <ul>
+            {% for w in generated.workout.warmup %}<li>{{ w.name }} — {{ w.plan }}</li>{% endfor %}
+          </ul>
+        </div>
+        <div>
+          <h4 style="margin-top:26px">Main Work</h4>
+          <ul>
+            {% for m in generated.workout.main %}<li>{{ m.name }} — {{ m.plan }} <span class="subtle">({{ m.est }})</span></li>{% endfor %}
+          </ul>
+          <h4>Cooldown</h4>
+          <ul>
+            {% for c in generated.workout.cooldown %}<li>{{ c.name }} — {{ c.plan }}</li>{% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if saved and saved|length > 1 %}
+  <div class="schedule-wrap">
+    <h2>Saved Schedules (this session)</h2>
+    {% for p in saved|reverse %}
+      <div class="person-card">
+        <h3>{{ p.name }}</h3>
+        <div class="pill">{{ p.workout.slot if p.workout else 'no-workout' }}</div>
+        <table class="schedule-table" style="margin-top:10px">
+          <thead><tr><th>Time</th><th>Activity</th><th class="subtle">Notes</th></tr></thead>
+          <tbody>
+          {% for b in p.schedule %}
+            <tr>
+              <td>{{ b.start }} – {{ b.end }}</td>
+              <td>{{ b.title }}</td>
+              <td class="subtle">{{ b.note }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</section>
+
+<footer>
+  <p>© 2025 Fitness & Work | All Rights Reserved</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Fitness & Work</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <div class="logo">🏋️ Fitness & Work</div>
+    <nav>
+      <ul>
+        <li><a href="{{ url_for('home') }}">Home</a></li>
+         <!-- Dropdown for Planning -->
+        <li class="dropdown">
+          <a href="#">Planning ▾</a>
+          <ul class="dropdown-content">
+            <li><a href="{{ url_for('workouts') }}">Workouts</a></li>
+            <li><a href="{{ url_for('diet') }}">Diet</a></li>
+            <li><a href="{{ url_for('worklife') }}">Work-Life</a></li>
+          </ul>
+        </li>
+        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+      {% if user %}
+        <li><a href="#">👤 {{ user }}</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+      {% else %}
+        <li><a href="{{ url_for('signup') }}">Signup</a></li>
+        <li><a href="{{ url_for('login') }}">Login</a></li>
+      {% endif %}
+
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('contact') }}" class="active">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="contact-form">
+    <h1>Contact Us</h1>
+
+    <!-- Flash message -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {{ messages[0] }}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('contact') }}">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <input type="text" name="subject" placeholder="Subject" required>
+      <textarea name="message" placeholder="Your Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2025 Fitness & Work | All Rights Reserved</p>
+  </footer>
+</body>
+</html>
