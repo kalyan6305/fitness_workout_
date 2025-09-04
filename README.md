@@ -1,5 +1,4 @@
 **WEBSITE LINK:  https://fitness-workout.onrender.com****
-Here’s a clean **README.md** file for your **Fitness & Work (Flask Project)** 👇
 
 ```markdown
 # 🏋️ Fitness & Work
@@ -136,7 +135,3 @@ fitness-work/
 
 ---
 
-```
-
-👉 Do you want me to also add a **demo usage flow (GIF/screenshots)** section so recruiters can see **signup → login → home → workout/diet plan → logout**?
-```
